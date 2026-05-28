@@ -1,0 +1,33 @@
+CMakeFiles/sataro.dir/render.c.o: \
+  /home/runner/work/quick-draw-panic/quick-draw-panic/render.c \
+  /home/runner/work/quick-draw-panic/quick-draw-panic/game.h \
+  /home/runner/work/quick-draw-panic/quick-draw-panic/build-web/_deps/raylib-src/src/raylib.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/compat/stdarg.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/stdarg.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/stdarg.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stdarg_header_macro.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stdarg___gnuc_va_list.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stdarg_va_list.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stdarg_va_arg.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stdarg___va_copy.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stdarg_va_copy.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/stdbool.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/stdbool.h \
+  /home/runner/work/quick-draw-panic/quick-draw-panic/render.h \
+  /home/runner/work/quick-draw-panic/quick-draw-panic/logic.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/stdio.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/wasi/api.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/stddef.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/stddef.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stddef_header_macro.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stddef_ptrdiff_t.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stddef_size_t.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stddef_wchar_t.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stddef_null.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/__stddef_offsetof.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/lib/clang/23/include/stdint.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/stdint.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/bits/alltypes.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/features.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/compat/math.h \
+  /home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/cache/sysroot/include/math.h
