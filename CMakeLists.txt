@@ -145,3 +145,12 @@ set(WEB_LINK_FLAGS
         "--preload-file ${CMAKE_SOURCE_DIR}/image@image"
         "--shell-file ${raylib_SOURCE_DIR}/src/minshell.html"
     )
+set(WEB_LINK_FLAGS
+        "-sUSE_GLFW=3"
+        "-sASYNCIFY"
+        "-sFORCE_FILESYSTEM=1"
+        "-sALLOW_MEMORY_GROWTH=1"
+        "-sEXPORTED_RUNTIME_METHODS=HEAPF32"
+        "--preload-file ${CMAKE_SOURCE_DIR}/image@image"
+        "--shell-file ${raylib_SOURCE_DIR}/src/minshell.html"
+    )
