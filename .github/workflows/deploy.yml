@@ -1,28 +1,34 @@
+name: Build and Deploy Web Game
 
 on:
   push:
-    branches: [ "main", "master" ] # mainまた�?�masterブランチが更新されたら作動
+    branches: [ "main", "master" ]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # GitHub Pagesへの書き込み権限を付�?
+      contents: write
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Emscripten
-        uses: mymindstorm/setup-emsdk@v12
+        uses: mymindstorm/setup-emsdk@v14
 
       - name: Build for Web
         run: |
           emcmake cmake -B build-web -DPLATFORM=Web
           cmake --build build-web
+          mkdir release
+          cp build-web/sataro.html release/index.html
+          cp build-web/sataro.js release/
+          cp build-web/sataro.wasm release/
+          cp build-web/sataro.data release/
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build-web
+          publish_dir: ./release
