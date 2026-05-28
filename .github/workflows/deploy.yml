@@ -1,0 +1,29 @@
+name: Build and Deploy Web Game
+
+on:
+  push:
+    branches: [ "main", "master" ] # mainまたはmasterブランチが更新されたら作動
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # GitHub Pagesへの書き込み権限を付与
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v12
+
+      - name: Build for Web
+        run: |
+          emcmake cmake -B build-web
+          cmake --build build-web
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build-web
