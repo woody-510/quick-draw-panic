@@ -1,4 +1,4 @@
-﻿/* =============================================================================
+/* =============================================================================
  * game.h — 早撃ちパニック（Quick Draw Panic）共通ヘッダー
  * =============================================================================
  * 【このファイルの役割】
@@ -109,11 +109,11 @@
  * BGM用のMP3ファイルパスを定義する場所。
  * 現在はダミーのパスが入っている。実際のMP3ファイルを用意したら、
  * ここのパスを書き換えるだけでBGMが鳴るようになる。 */
-#define BGM_TITLE_PATH      "audio/bgm_title.mp3"      /* ←ここにタイトル用BGMのパスを入れる */
-#define BGM_TIMEATTACK_PATH "audio/bgm_timeattack.mp3"  /* ←ここにタイムアタック用BGMのパスを入れる */
-#define BGM_SURVIVAL_PATH   "audio/bgm_survival.mp3"    /* ←ここにサバイバル用BGMのパスを入れる */
-#define BGM_MARATHON_PATH   "audio/bgm_marathon.mp3"    /* ←ここにマラソン用BGMのパスを入れる */
-#define BGM_RESULT_PATH     "audio/bgm_result.mp3"      /* ←ここにリザルト用BGMのパスを入れる */
+#define BGM_TITLE_PATH      "audio/start.mp3"      /* ←ここにタイトル用BGMのパスを入れる */
+#define BGM_TIMEATTACK_PATH "audio/timeattack.mp3"  /* ←ここにタイムアタック用BGMのパスを入れる */
+#define BGM_SURVIVAL_PATH   "audio/survival.mp3"    /* ←ここにサバイバル用BGMのパスを入れる */
+#define BGM_MARATHON_PATH   "audio/marathon.mp3"    /* ←ここにマラソン用BGMのパスを入れる */
+#define BGM_RESULT_PATH     "audio/result.mp3"      /* ←ここにリザルト用BGMのパスを入れる */
 #define BGM_COUNT           5       /* BGMの総数 */
 #define BGM_VOLUME_NORMAL   0.8f    /* 通常時のBGM音量（0.0=無音 ～ 1.0=最大） */
 #define BGM_VOLUME_PAUSE    0.3f    /* ポーズ時のBGM音量 */

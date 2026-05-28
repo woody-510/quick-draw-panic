@@ -38,6 +38,7 @@ if(EMSCRIPTEN)
         "-sALLOW_MEMORY_GROWTH=1"
         "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPF32"
         "--preload-file ${CMAKE_SOURCE_DIR}/image@image"
+        "--preload-file ${CMAKE_SOURCE_DIR}/audio@audio"
         "--shell-file ${raylib_SOURCE_DIR}/src/minshell.html"
     )
 
