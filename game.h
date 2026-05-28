@@ -1,395 +1,149 @@
-/* =============================================================================
- * game.h — 早撃ちパニック（Quick Draw Panic）共通ヘッダー
- * =============================================================================
- * 【このファイルの役割】
- * ゲーム全体で共有する「ルールブック」。
- * 定数（#define）、構造体（struct）、列挙型（enum）、グローバル変数の宣言を
- * ここにまとめることで、main.c / logic.c / render.c のどこからでも参照できる。
- *
- * 【初心者向けメモ】
- * ・#ifndef 〜 #endif は「インクルードガード」。同じヘッダーが2回以上
- *   読み込まれてもエラーにならないようにする定番テクニック。
- * ・extern は「この変数は別のファイルで実体が定義されている」という宣言。
- *   実体（メモリ確保）は main.c で行う。
- * ========================================================================== */
-
 #ifndef GAME_H
 #define GAME_H
 
-/* -----------------------------------------------------------------------
- * インクルード
- * raylib.h を読み込むことで、Texture2D, Music, Vector2, Rectangle, Color
- * などのRaylib型がこのヘッダー内でも使えるようになる。
- * stdbool.h は bool型（true/false）を使うために必要（C99以降）。
- * ----------------------------------------------------------------------- */
 #include "raylib.h"
 #include <stdbool.h>
 
-/* ==========================================================================
- * 定数定義（#define）
- * ==========================================================================
- * 【なぜ定数を使うのか？】
- * コード中に「マジックナンバー」（意味不明な数値）を直接書くと、
- * 後から「これは何の数字だっけ？」「変えたいけどどこを直す？」となる。
- * #define で名前を付けておけば、1箇所変えるだけで全体に反映される。
- *
- * 【数値を変更するときの注意】
- * ・画面サイズを変えたら、プレイエリアの座標も調整が必要。
- * ・TARGET_SIZE_FRONT を大きくしすぎると3つの的が横に並ばなくなる。
- *   目安: TARGET_SIZE_FRONT × 3 < PLAY_AREA_RIGHT - PLAY_AREA_LEFT
- * ========================================================================== */
+#define SCREEN_WIDTH        450
+#define SCREEN_HEIGHT       800
+#define TARGET_FPS          60
 
-/* --- 画面設定 ---
- * 縦長（ポートレート）レイアウト。スマートフォンの縦持ちを想定。
- * 横長にしたい場合は WIDTH と HEIGHT を入れ替えるが、
- * プレイエリアの座標もすべて調整する必要がある。 */
-#define SCREEN_WIDTH        450     /* 画面の横幅（ピクセル） */
-#define SCREEN_HEIGHT       800     /* 画面の縦幅（ピクセル） */
-#define TARGET_FPS          60      /* 1秒あたりの描画回数（フレームレート） */
+#define PLAY_AREA_TOP       100
+#define PLAY_AREA_BOTTOM    750
+#define PLAY_AREA_LEFT      25
+#define PLAY_AREA_RIGHT     425
 
-/* --- プレイエリア ---
- * 的が表示される領域の範囲。この領域外のタップはミス判定にならない。
- * ┌────────────────────────┐ y=0
- * │        HUD領域          │
- * ├────────────────────────┤ y=PLAY_AREA_TOP (100)
- * │   ←LEFT(25)             │
- * │    プレイエリア   RIGHT(425)→│
- * │                          │
- * ├────────────────────────┤ y=PLAY_AREA_BOTTOM (750)
- * │        下部余白          │
- * └────────────────────────┘ y=800
- */
-#define PLAY_AREA_TOP       100     /* プレイエリア上端のY座標 */
-#define PLAY_AREA_BOTTOM    750     /* プレイエリア下端のY座標 */
-#define PLAY_AREA_LEFT      25      /* プレイエリア左端のX座標 */
-#define PLAY_AREA_RIGHT     425     /* プレイエリア右端のX座標 */
+#define LANE_COUNT          3
+#define MAX_VISIBLE_ROWS    6
 
-/* --- レーンと行の設定 --- */
-#define LANE_COUNT          3       /* レーン（列）の数。3列固定。 */
-#define MAX_VISIBLE_ROWS    6       /* 同時に画面上に見える的の行数 */
+#define TARGET_SIZE_FRONT   120
+#define TARGET_SIZE_BACK    40
 
-/* --- 的のサイズ ---
- * 疑似3D表現のため、手前の的は大きく、奥の的は小さく描画する。
- * TARGET_SIZE_FRONT: 最も手前（row=0）の的のピクセルサイズ
- * TARGET_SIZE_BACK : 最も奥（row=MAX_VISIBLE_ROWS-1）の的のピクセルサイズ
- *
- * 【変更時の注意】
- * TARGET_SIZE_FRONT × 3 が (PLAY_AREA_RIGHT - PLAY_AREA_LEFT) = 400 を
- * 超えると、手前の的が横に並びきらなくなる。
- * 現在: 120 × 3 = 360 < 400 → OK（左右に20pxずつの余白） */
-#define TARGET_SIZE_FRONT   120     /* 最手前の的のサイズ（ピクセル） */
-#define TARGET_SIZE_BACK    40      /* 最奥の的のサイズ（ピクセル） */
-
-/* --- 的の行間の重なり率 ---
- * 0.0 = 重なりなし（行間に隙間ができる）
- * 0.5 = 半分重なる
- * 1.0 = 完全に重なる（見えなくなるので使わない）
- *
- * この値を大きくすると、的同士がより密に重なり、
- * 奥行き感が強くなるが、奥の的が見えにくくなる。
- * 0.30〜0.40 が視認性と奥行き感のバランスが良い。 */
 #define ROW_OVERLAP_RATIO   0.35f
 
-/* --- ゲームバランス定数 --- */
-#define TIMEATTACK_GOAL     50      /* タイムアタックで撃ち抜く目標枚数 */
-#define TIMEATTACK_LIMIT    60.0f   /* タイムアタックの制限時間（秒） */
-#define MISS_FREEZE_TIME    1.0f    /* ミス時の操作不能時間（秒）。大きいほど厳しい。 */
-#define MISS_FLASH_TIME     0.15f   /* ミス時の白フラッシュ持続時間（秒） */
-#define TOTAL_STAGES        16      /* ステージ総数（画像の枚数と一致） */
+#define TIMEATTACK_GOAL     50
+#define TIMEATTACK_LIMIT    60.0f
+#define MISS_FREEZE_TIME    1.0f
+#define MISS_FLASH_TIME     0.15f
+#define TOTAL_STAGES        16
 
-/* --- マラソンモード専用定数 --- */
-#define MARATHON_DUAL_CHANCE  0.05f   /* 正解が2つ同時出現する確率（5% = 0.05） */
-#define MARATHON_DECAY_ACCEL  0.008f  /* ゲージ減少速度の加速係数。大きいほど急激に加速。 */
-#define MARATHON_INITIAL_DECAY 1.0f   /* ゲージ減少の初期速度 */
+#define MARATHON_DUAL_CHANCE  0.05f
+#define MARATHON_DECAY_ACCEL  0.008f
+#define MARATHON_INITIAL_DECAY 1.0f
 
-/* --- カウントダウン --- */
-#define COUNTDOWN_INTERVAL  1.0f    /* カウントダウンの各数字の表示時間（秒） */
+#define COUNTDOWN_INTERVAL  1.0f
 
-/* --- 音声 ---
- * BGM用のMP3ファイルパスを定義する場所。
- * 現在はダミーのパスが入っている。実際のMP3ファイルを用意したら、
- * ここのパスを書き換えるだけでBGMが鳴るようになる。 */
-#define BGM_TITLE_PATH      "audio/start.mp3"      /* ←ここにタイトル用BGMのパスを入れる */
-#define BGM_TIMEATTACK_PATH "audio/timeattack.mp3"  /* ←ここにタイムアタック用BGMのパスを入れる */
-#define BGM_SURVIVAL_PATH   "audio/survival.mp3"    /* ←ここにサバイバル用BGMのパスを入れる */
-#define BGM_MARATHON_PATH   "audio/marathon.mp3"    /* ←ここにマラソン用BGMのパスを入れる */
-#define BGM_RESULT_PATH     "audio/result.mp3"      /* ←ここにリザルト用BGMのパスを入れる */
-#define BGM_COUNT           5       /* BGMの総数 */
-#define BGM_VOLUME_NORMAL   0.8f    /* 通常時のBGM音量（0.0=無音 ～ 1.0=最大） */
-#define BGM_VOLUME_PAUSE    0.3f    /* ポーズ時のBGM音量 */
+#define TEXTURE_LOAD_SIZE   256
 
-/* --- テクスチャ読み込み --- */
-#define TEXTURE_LOAD_SIZE   256     /* GPU節約のため、読み込み後にリサイズするサイズ */
+#define SLIDE_INTERVAL      3.0f
+#define SLIDE_FADE_SPEED    2.0f
 
-/* --- タイトル画面のスライドショー --- */
-#define SLIDE_INTERVAL      3.0f    /* 画像の切り替え間隔（秒） */
-#define SLIDE_FADE_SPEED    2.0f    /* フェードイン・アウトの速度 */
+#define BUTTON_WIDTH        300
+#define BUTTON_HEIGHT       65
+#define BUTTON_MARGIN       20
+#define PAUSE_BTN_SIZE      40
+#define PAUSE_BTN_X         (SCREEN_WIDTH - PAUSE_BTN_SIZE - 10)
+#define PAUSE_BTN_Y         10
 
-/* --- UIのサイズと位置 --- */
-#define BUTTON_WIDTH        300     /* ボタンの横幅 */
-#define BUTTON_HEIGHT       65      /* ボタンの縦幅 */
-#define BUTTON_MARGIN       20      /* ボタン間の余白 */
-#define PAUSE_BTN_SIZE      40      /* ポーズボタンのサイズ */
-#define PAUSE_BTN_X         (SCREEN_WIDTH - PAUSE_BTN_SIZE - 10) /* ポーズボタンX座標 */
-#define PAUSE_BTN_Y         10      /* ポーズボタンY座標 */
+#define MAX_RANKINGS        5
 
-/* --- スコア --- */
-#define MAX_RANKINGS        5       /* ランキングの保存件数（TOP5） */
-
-/* ==========================================================================
- * 列挙型（enum）
- * ==========================================================================
- * 【列挙型とは？】
- * 関連する定数に名前を付けてグループ化する仕組み。
- * 例えば「画面の状態」を 0, 1, 2... と数字で管理すると意味不明だが、
- * SCREEN_TITLE, SCREEN_PLAYING と名前を付ければ一目瞭然。
- * ========================================================================== */
-
-/* --- ゲームの画面状態 ---
- * 「今どの画面を表示しているか」を管理する。
- * メインループで switch文 を使って、状態に応じた処理を行う。 */
 typedef enum {
-    SCREEN_TITLE,       /* タイトル画面（モード選択） */
-    SCREEN_PLAYING,     /* ゲームプレイ中 */
-    SCREEN_PAUSE,       /* ポーズ中（ゲーム一時停止） */
-    SCREEN_COUNTDOWN,   /* カウントダウン中（ポーズからの復帰時に3,2,1を表示） */
-    SCREEN_RESULT,      /* リザルト画面（スコア表示） */
-    SCREEN_SCORES       /* スコア一覧画面（ランキング） */
+    SCREEN_TITLE,
+    SCREEN_PLAYING,
+    SCREEN_PAUSE,
+    SCREEN_COUNTDOWN,
+    SCREEN_RESULT,
+    SCREEN_SCORES
 } ScreenState;
 
-/* --- ゲームモード ---
- * タイトル画面で選んだモードによって、ゲームのルールが変わる。 */
 typedef enum {
-    MODE_TIMEATTACK,    /* タイムアタック：50枚を最速で撃ち抜く */
-    MODE_SURVIVAL,      /* サバイバル：ミスするまで無限に続く */
-    MODE_MARATHON       /* マラソン：ゲージが切れるまでの生存時間を競う */
+    MODE_TIMEATTACK,
+    MODE_SURVIVAL,
+    MODE_MARATHON
 } GameMode;
 
-/* --- タップ結果 ---
- * HandleTargetTap() 関数の戻り値。何が起きたかを呼び出し元に伝える。 */
 typedef enum {
-    TAP_NONE,           /* 何も起きなかった（的の上ではなかった） */
-    TAP_HIT,            /* 正解の的を撃ち抜いた！ */
-    TAP_MISS            /* 空欄の的をタップしてしまった（ミス） */
+    TAP_NONE,
+    TAP_HIT,
+    TAP_MISS
 } TapResult;
 
-/* ==========================================================================
- * 構造体（struct）
- * ==========================================================================
- * 【構造体とは？】
- * 複数の変数をひとまとめにして扱う仕組み。
- * 例えば「的」には「位置」「画像番号」「正解かどうか」など
- * 複数の情報が必要。これらをバラバラの変数にすると管理が大変なので、
- * Target構造体として1つにまとめる。
- * ========================================================================== */
-
-/* --- 的（ターゲット）1つ分のデータ ---
- * ゲーム画面には最大 6行×3列 = 18個 の的が同時に表示される。
- * それぞれの的がこの構造体のデータを持つ。 */
 typedef struct {
-    int lane;           /* どのレーンにいるか（0=左, 1=中央, 2=右） */
-    int row;            /* 何行目か（0=最手前, 5=最奥）。手前ほど大きく描画される */
-    int imageIndex;     /* 使用する画像の番号（0〜15）。ステージ番号に対応。 */
-    bool isCorrect;     /* true=正解の的（画像を表示）, false=空欄の的（×マークを表示） */
-    bool isActive;      /* true=有効（画面上に存在する）, false=無効（非表示） */
+    int lane;
+    int row;
+    int imageIndex;
+    bool isCorrect;
+    bool isActive;
 } Target;
 
-/* --- ゲーム全体の状態 ---
- * ゲームの「今どうなっているか」をすべてこの構造体で管理する。
- * グローバル変数 game としてゲーム中ずっと保持する。 */
 typedef struct {
-    ScreenState screen;     /* 現在の画面（タイトル/プレイ/ポーズ/リザルト等） */
-    GameMode mode;          /* 選択中のゲームモード */
-
-    /* --- ステージ・スコア --- */
-    int stage;              /* 現在のステージ番号（1〜16） */
-    int score;              /* 撃ち抜いた枚数（全モード共通のカウント） */
-
-    /* --- タイマー --- */
-    float elapsedTime;      /* ゲーム開始からの経過時間（秒）。タイムアタックのスコアにも使う */
-
-    /* --- マラソンモード専用 --- */
-    float gaugeValue;       /* ゲージの現在値（0.0〜gaugeMax）。0になるとゲームオーバー */
-    float gaugeMax;         /* ゲージの最大値。ステージが進むほど短くなる */
-    float gaugeDecaySpeed;  /* ゲージの1秒あたりの減少量。時間経過で加速する */
-
-    /* --- エフェクト用タイマー --- */
-    float freezeTimer;      /* ミス後の操作不能の残り時間（秒）。0以下なら操作可能 */
-    float flashTimer;       /* 白フラッシュの残り時間（秒）。0以下ならフラッシュ終了 */
-
-    /* --- カウントダウン用 --- */
-    float countdownTimer;   /* カウントダウンの残り時間（秒）。0になると次の数字へ */
-    int countdownNumber;    /* カウントダウンの現在の数字（3→2→1→ゲーム再開） */
-
-    /* --- ゲーム進行フラグ --- */
-    bool isGameOver;        /* true=ゲームオーバー（リザルト画面へ遷移すべき状態） */
-    bool isNewRecord;       /* true=新記録を達成した（リザルト画面でNEW RECORD表示） */
-    bool isTimedOut;        /* true=タイムアタックで時間切れ（記録なしの特殊ゲームオーバー） */
-
-    /* --- 的の2D配列 ---
-     * targets[行][レーン] でアクセスする。
-     * targets[0][0] = 最手前・左レーンの的
-     * targets[5][2] = 最奥・右レーンの的 */
+    ScreenState screen;
+    GameMode mode;
+    int stage;
+    int score;
+    float elapsedTime;
+    float gaugeValue;
+    float gaugeMax;
+    float gaugeDecaySpeed;
+    float freezeTimer;
+    float flashTimer;
+    float countdownTimer;
+    int countdownNumber;
+    bool isGameOver;
+    bool isNewRecord;
+    bool isTimedOut;
     Target targets[MAX_VISIBLE_ROWS][LANE_COUNT];
-
-    /* --- タイトル画面のスライドショー用 --- */
-    float slideTimer;       /* 次の画像への切り替えまでの残り時間 */
-    int slideIndex;         /* 現在表示中の画像番号（0〜15） */
-    int slideIndexNext;     /* フェード先の次の画像番号 */
-    float slideAlpha;       /* フェード用アルファ値（0.0=透明 ～ 1.0=不透明） */
+    float slideTimer;
+    int slideIndex;
+    int slideIndexNext;
+    float slideAlpha;
 } GameState;
 
-/* --- スコア記録 ---
- * 各モードのTOP5ランキングを保持する構造体。
- * ファイルに保存/読み込みして永続化する。 */
 typedef struct {
-    int timeattack[MAX_RANKINGS];   /* タイムアタック：到達タイム（ミリ秒、小さいほど良い） */
-    int survival[MAX_RANKINGS];     /* サバイバル：撃ち抜いた枚数（大きいほど良い） */
-    int marathon[MAX_RANKINGS];     /* マラソン：生存時間（ミリ秒、大きいほど良い） */
+    int timeattack[MAX_RANKINGS];
+    int survival[MAX_RANKINGS];
+    int marathon[MAX_RANKINGS];
 } ScoreData;
 
-/* ==========================================================================
- * ステージカラーテーブル
- * ==========================================================================
- * 各ステージの背景色と空欄の的の色を定義する。
- * HEXコードから Raylib の Color型（RGBA各0〜255）に変換済み。
- *
- * 【Color型の書式】
- * (Color){ R, G, B, A }
- * R=赤, G=緑, B=青, A=不透明度（255=完全不透明）
- *
- * 【HEXコードからの変換方法】
- * 例: #66FF66 → R=0x66=102, G=0xFF=255, B=0x66=102
- * ========================================================================== */
-
-/* --- ステージテーマ名（日本語） ---
- * 描画時にステージ名を表示するために使う文字列配列。
- * ※Raylibのデフォルトフォントでは日本語が表示できないため、
- *   実際にはアルファベットのテーマ名を使用する。 */
 static const char *STAGE_NAMES[TOTAL_STAGES] = {
-    "Grassland",    /* 1: 草原 */
-    "Volcano",      /* 2: 火山 */
-    "Glacier",      /* 3: 氷河 */
-    "Ghost Manor",  /* 4: 幽霊館 */
-    "Desert",       /* 5: 砂漠 */
-    "Deep Sea",     /* 6: 深海 */
-    "Neon City",    /* 7: ネオン街 */
-    "Clock Tower",  /* 8: 時計塔 */
-    "Sky",          /* 9: 大空 */
-    "Toxic Swamp",  /* 10: 毒の沼 */
-    "Colosseum",    /* 11: コロシアム */
-    "Crystal Cave", /* 12: 水晶洞窟 */
-    "Heavy Ind.",   /* 13: 重工業 */
-    "Outer Space",  /* 14: 宇宙空間 */
-    "Heaven",       /* 15: 天界 */
-    "Abyss"         /* 16: 奈落 */
+    "Grassland", "Volcano", "Glacier", "Ghost Manor",
+    "Desert", "Deep Sea", "Neon City", "Clock Tower",
+    "Sky", "Toxic Swamp", "Colosseum", "Crystal Cave",
+    "Heavy Ind.", "Outer Space", "Heaven", "Abyss"
 };
 
-/* --- ステージ背景色 ---
- * STAGE_BG_COLORS[0] = ステージ1の背景色 ... [15] = ステージ16の背景色 */
 static const Color STAGE_BG_COLORS[TOTAL_STAGES] = {
-    { 102, 255, 102, 255 },     /*  1: 草原     #66FF66 */
-    { 139,   0,   0, 255 },     /*  2: 火山     #8B0000 */
-    { 165, 242, 243, 255 },     /*  3: 氷河     #A5F2F3 */
-    {   0,   0,   0, 255 },     /*  4: 幽霊館   #000000 */
-    { 244, 164,  96, 255 },     /*  5: 砂漠     #F4A460 */
-    {  25,  25, 112, 255 },     /*  6: 深海     #191970 */
-    { 169, 169, 169, 255 },     /*  7: ネオン街 #A9A9A9 */
-    { 181, 166,  66, 255 },     /*  8: 時計塔   #B5A642 */
-    { 135, 206, 235, 255 },     /*  9: 大空     #87CEEB */
-    { 128,   0, 128, 255 },     /* 10: 毒の沼   #800080 */
-    { 179,  57,  57, 255 },     /* 11: コロシアム #B33939 */
-    {   0,   0, 128, 255 },     /* 12: 水晶洞窟 #000080 */
-    { 183,  65,  14, 255 },     /* 13: 重工業   #B7410E */
-    {  12,  12,  12, 255 },     /* 14: 宇宙空間 #0C0C0C */
-    { 255, 215,   0, 255 },     /* 15: 天界     #FFD700 */
-    { 102,   0,   0, 255 },     /* 16: 奈落     #660000 */
+    { 102, 255, 102, 255 }, { 139,   0,   0, 255 },
+    { 165, 242, 243, 255 }, {   0,   0,   0, 255 },
+    { 244, 164,  96, 255 }, {  25,  25, 112, 255 },
+    { 169, 169, 169, 255 }, { 181, 166,  66, 255 },
+    { 135, 206, 235, 255 }, { 128,   0, 128, 255 },
+    { 179,  57,  57, 255 }, {   0,   0, 128, 255 },
+    { 183,  65,  14, 255 }, {  12,  12,  12, 255 },
+    { 255, 215,   0, 255 }, { 102,   0,   0, 255 },
 };
 
-/* --- ステージの空欄的カラー ---
- * 正解でない的（×マーク）に使われる色。 */
 static const Color STAGE_BLANK_COLORS[TOTAL_STAGES] = {
-    { 139,  90,  43, 255 },     /*  1: 草原     #8B5A2B */
-    {  54,  69,  79, 255 },     /*  2: 火山     #36454F */
-    { 250, 250, 250, 255 },     /*  3: 氷河     #FAFAFA */
-    {  48,  25,  52, 255 },     /*  4: 幽霊館   #301934 */
-    { 226, 114,  91, 255 },     /*  5: 砂漠     #E2725B */
-    { 127, 255, 212, 255 },     /*  6: 深海     #7FFFD4 */
-    { 255,  20, 147, 255 },     /*  7: ネオン街 #FF1493 */
-    {  70, 130, 180, 255 },     /*  8: 時計塔   #4682B4 */
-    { 245, 245, 245, 255 },     /*  9: 大空     #F5F5F5 */
-    {  50, 205,  50, 255 },     /* 10: 毒の沼   #32CD32 */
-    { 209, 204, 192, 255 },     /* 11: コロシアム #D1CCC0 */
-    {   0, 255, 255, 255 },     /* 12: 水晶洞窟 #00FFFF */
-    {  42,  52,  57, 255 },     /* 13: 重工業   #2A3439 */
-    { 192, 192, 192, 255 },     /* 14: 宇宙空間 #C0C0C0 */
-    { 240, 248, 255, 255 },     /* 15: 天界     #F0F8FF */
-    {  11,  11,  11, 255 },     /* 16: 奈落     #0B0B0B */
+    { 139,  90,  43, 255 }, {  54,  69,  79, 255 },
+    { 250, 250, 250, 255 }, {  48,  25,  52, 255 },
+    { 226, 114,  91, 255 }, { 127, 255, 212, 255 },
+    { 255,  20, 147, 255 }, {  70, 130, 180, 255 },
+    { 245, 245, 245, 255 }, {  50, 205,  50, 255 },
+    { 209, 204, 192, 255 }, {   0, 255, 255, 255 },
+    {  42,  52,  57, 255 }, { 192, 192, 192, 255 },
+    { 240, 248, 255, 255 }, {  11,  11,  11, 255 },
 };
 
-/* ==========================================================================
- * マラソンモードのステージ進行テーブル
- * ==========================================================================
- * 序盤は素早くステージが進み、終盤はじっくり。
- * STAGE_THRESHOLDS[i] = ステージ(i+2)へ進むのに必要な累計スコア。
- * 例: STAGE_THRESHOLDS[0] = 3 → スコア3でステージ2へ
- *
- * 【タイムアタックの場合】
- * 50枚を16ステージで分けるので、約3枚/ステージで均等に進行する。
- * TIMEATTACK_STAGE_THRESHOLDS を別途定義。
- * ========================================================================== */
 static const int STAGE_THRESHOLDS[TOTAL_STAGES - 1] = {
-    3,      /* ステージ2へ（累計  3枚） */
-    6,      /* ステージ3へ（累計  6枚） */
-    9,      /* ステージ4へ（累計  9枚） */
-    12,     /* ステージ5へ（累計 12枚） */
-    16,     /* ステージ6へ（累計 16枚） */
-    20,     /* ステージ7へ（累計 20枚） */
-    25,     /* ステージ8へ（累計 25枚） */
-    30,     /* ステージ9へ（累計 30枚） */
-    36,     /* ステージ10へ（累計36枚） */
-    42,     /* ステージ11へ（累計42枚） */
-    49,     /* ステージ12へ（累計49枚） */
-    57,     /* ステージ13へ（累計57枚） */
-    66,     /* ステージ14へ（累計66枚） */
-    76,     /* ステージ15へ（累計76枚） */
-    88      /* ステージ16へ（累計88枚） */
+    3, 6, 9, 12, 16, 20, 25, 30, 36, 42, 49, 57, 66, 76, 88
 };
 
-/* タイムアタック用のステージ進行テーブル
- * 50枚 / 16ステージ ≈ 約3枚/ステージ */
 static const int TIMEATTACK_STAGE_THRESHOLDS[TOTAL_STAGES - 1] = {
-    3,  6,  9, 12, 15, 18, 21, 25,
-    28, 31, 34, 37, 40, 43, 46, /* ステージ16へ（累計46枚） → 残り4枚で完走 */
+    3, 6, 9, 12, 15, 18, 21, 25, 28, 31, 34, 37, 40, 43, 46
 };
 
-/* ==========================================================================
- * グローバル変数（extern宣言）
- * ==========================================================================
- * ここでは「宣言」のみ。実体（メモリ確保）は main.c で行う。
- * extern を付けることで「この変数は存在するけど、ここでは場所を確保しない」
- * という意味になる。
- * ========================================================================== */
-
-/* --- ゲーム状態 ---
- * ゲーム中のあらゆる情報（スコア、ステージ、的の配列等）を持つ。
- * logic.c で値を更新し、render.c で値を読んで描画する。 */
 extern GameState game;
-
-/* --- スコアデータ ---
- * モード別のTOP5ランキング。ファイルに保存/読み込みする。 */
 extern ScoreData scores;
-
-/* --- テクスチャ配列 ---
- * 16枚の的の画像をGPUメモリに保持する配列。
- * textures[0] = 1.jpeg のテクスチャ ... textures[15] = 16.jpeg のテクスチャ */
 extern Texture2D textures[TOTAL_STAGES];
 
-/* --- BGM ---
- * 5曲分のBGMストリーム。ダミー枠として用意。
- * bgmLoaded[i] が false の場合、そのBGMはファイルが見つからなかったため
- * 再生をスキップする。 */
-extern Music bgm[BGM_COUNT];
-extern bool bgmLoaded[BGM_COUNT];
-
-#endif /* GAME_H */
+#endif
