@@ -55,13 +55,10 @@ void PlayWebBGM(int trackId)
             window.myBgmAudio = new Audio();
             window.myBgmAudio.loop = true;
         }
-        var tracks = [
-            "audio/start.mp3",
-            "audio/timeattack.mp3",
-            "audio/survival.mp3",
-            "audio/marathon.mp3",
-            "audio/result.mp3"
-        ];
+        // カンマ誤認を防ぐため | で結合した文字列を split で配列化
+        var trackStr = "audio/start.mp3|audio/timeattack.mp3|audio/survival.mp3|audio/marathon.mp3|audio/result.mp3";
+        var tracks = trackStr.split("|");
+        
         if ($0 >= 0 && $0 < tracks.length) {
             window.myBgmAudio.src = tracks[$0];
             window.myBgmAudio.play().catch(function(e){ console.log("BGM待機中"); });
