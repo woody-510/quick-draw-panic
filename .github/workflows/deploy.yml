@@ -26,6 +26,7 @@ jobs:
           cp build-web/sataro.js release/
           cp build-web/sataro.wasm release/
           cp build-web/sataro.data release/
+          cp -r audio release/audio
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
