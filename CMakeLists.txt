@@ -137,3 +137,11 @@ endif()
 # ==============================================================================
 # Raylibの自動ダウンロードと設定
 # ...（これ以降は元のまま）...
+set(WEB_LINK_FLAGS
+        "-sUSE_GLFW=3"
+        "-sASYNCIFY"
+        "-sFORCE_FILESYSTEM=1"
+        "-sALLOW_MEMORY_GROWTH=1"
+        "--preload-file ${CMAKE_SOURCE_DIR}/image@image"
+        "--shell-file ${raylib_SOURCE_DIR}/src/minshell.html"
+    )
