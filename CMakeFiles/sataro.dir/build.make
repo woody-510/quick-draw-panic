@@ -76,43 +76,43 @@ CMakeFiles/sataro.dir/main.c.o: CMakeFiles/sataro.dir/flags.make
 CMakeFiles/sataro.dir/main.c.o: /home/runner/work/quick-draw-panic/quick-draw-panic/main.c
 CMakeFiles/sataro.dir/main.c.o: CMakeFiles/sataro.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/quick-draw-panic/quick-draw-panic/build-web/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/sataro.dir/main.c.o"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/sataro.dir/main.c.o -MF CMakeFiles/sataro.dir/main.c.o.d -o CMakeFiles/sataro.dir/main.c.o -c /home/runner/work/quick-draw-panic/quick-draw-panic/main.c
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/sataro.dir/main.c.o -MF CMakeFiles/sataro.dir/main.c.o.d -o CMakeFiles/sataro.dir/main.c.o -c /home/runner/work/quick-draw-panic/quick-draw-panic/main.c
 
 CMakeFiles/sataro.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/sataro.dir/main.c.i"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/runner/work/quick-draw-panic/quick-draw-panic/main.c > CMakeFiles/sataro.dir/main.c.i
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/runner/work/quick-draw-panic/quick-draw-panic/main.c > CMakeFiles/sataro.dir/main.c.i
 
 CMakeFiles/sataro.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/sataro.dir/main.c.s"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/runner/work/quick-draw-panic/quick-draw-panic/main.c -o CMakeFiles/sataro.dir/main.c.s
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/runner/work/quick-draw-panic/quick-draw-panic/main.c -o CMakeFiles/sataro.dir/main.c.s
 
 CMakeFiles/sataro.dir/logic.c.o: CMakeFiles/sataro.dir/flags.make
 CMakeFiles/sataro.dir/logic.c.o: /home/runner/work/quick-draw-panic/quick-draw-panic/logic.c
 CMakeFiles/sataro.dir/logic.c.o: CMakeFiles/sataro.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/quick-draw-panic/quick-draw-panic/build-web/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/sataro.dir/logic.c.o"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/sataro.dir/logic.c.o -MF CMakeFiles/sataro.dir/logic.c.o.d -o CMakeFiles/sataro.dir/logic.c.o -c /home/runner/work/quick-draw-panic/quick-draw-panic/logic.c
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/sataro.dir/logic.c.o -MF CMakeFiles/sataro.dir/logic.c.o.d -o CMakeFiles/sataro.dir/logic.c.o -c /home/runner/work/quick-draw-panic/quick-draw-panic/logic.c
 
 CMakeFiles/sataro.dir/logic.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/sataro.dir/logic.c.i"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/runner/work/quick-draw-panic/quick-draw-panic/logic.c > CMakeFiles/sataro.dir/logic.c.i
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/runner/work/quick-draw-panic/quick-draw-panic/logic.c > CMakeFiles/sataro.dir/logic.c.i
 
 CMakeFiles/sataro.dir/logic.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/sataro.dir/logic.c.s"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/runner/work/quick-draw-panic/quick-draw-panic/logic.c -o CMakeFiles/sataro.dir/logic.c.s
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/runner/work/quick-draw-panic/quick-draw-panic/logic.c -o CMakeFiles/sataro.dir/logic.c.s
 
 CMakeFiles/sataro.dir/render.c.o: CMakeFiles/sataro.dir/flags.make
 CMakeFiles/sataro.dir/render.c.o: /home/runner/work/quick-draw-panic/quick-draw-panic/render.c
 CMakeFiles/sataro.dir/render.c.o: CMakeFiles/sataro.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/quick-draw-panic/quick-draw-panic/build-web/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/sataro.dir/render.c.o"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/sataro.dir/render.c.o -MF CMakeFiles/sataro.dir/render.c.o.d -o CMakeFiles/sataro.dir/render.c.o -c /home/runner/work/quick-draw-panic/quick-draw-panic/render.c
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/sataro.dir/render.c.o -MF CMakeFiles/sataro.dir/render.c.o.d -o CMakeFiles/sataro.dir/render.c.o -c /home/runner/work/quick-draw-panic/quick-draw-panic/render.c
 
 CMakeFiles/sataro.dir/render.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/sataro.dir/render.c.i"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/runner/work/quick-draw-panic/quick-draw-panic/render.c > CMakeFiles/sataro.dir/render.c.i
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/runner/work/quick-draw-panic/quick-draw-panic/render.c > CMakeFiles/sataro.dir/render.c.i
 
 CMakeFiles/sataro.dir/render.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/sataro.dir/render.c.s"
-	/home/runner/work/_temp/bdf403c1-aec2-4aff-b199-46d97975327a/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/runner/work/quick-draw-panic/quick-draw-panic/render.c -o CMakeFiles/sataro.dir/render.c.s
+	/home/runner/work/_temp/5107cbf0-87b2-4d26-9227-1d7384b56459/emsdk-main/upstream/emscripten/emcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/runner/work/quick-draw-panic/quick-draw-panic/render.c -o CMakeFiles/sataro.dir/render.c.s
 
 # Object files for target sataro
 sataro_OBJECTS = \
