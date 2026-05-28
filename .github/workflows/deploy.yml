@@ -1,14 +1,13 @@
-name: Build and Deploy Web Game
 
 on:
   push:
-    branches: [ "main", "master" ] # mainまた�?�masterブランチが更新されたら作動
+    branches: [ "main", "master" ] # mainまた�?�masterブランチが更新されたら作動
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # GitHub Pagesへの書き込み権限を付�?
+      contents: write # GitHub Pagesへの書き込み権限を付�?
 
     steps:
       - name: Checkout Code
